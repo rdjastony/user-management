@@ -1,0 +1,32 @@
+# Java
+/target
+*.class
+
+# Logs
+*.log
+
+# System
+.DS_Store
+
+# IntelliJ / Eclipse
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+
+# Node
+node_modules/
+
+# OS
+Thumbs.db
+
+# Docker
+**/.env
+
+# Kubernetes secrets or terraform state
+*.tfstate
+*.tfstate.backup
+
+# Other
+*.jar

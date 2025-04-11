@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>User Management</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="container">
+    <h1>User Management</h1>
+
+    <section>
+        <h2>Ping API</h2>
+        <button onclick="ping()">Ping</button>
+        <p id="pingResult"></p>
+    </section>
+
+    <section>
+        <h2>Get User by ID</h2>
+        <input type="text" id="getUserId" placeholder="Enter User ID" />
+        <button onclick="getUser()">Get User</button>
+        <pre id="userResult"></pre>
+    </section>
+
+    <section>
+        <h2>Add New User</h2>
+        <input type="text" id="userId" placeholder="ID" />
+        <input type="text" id="userName" placeholder="Name" />
+        <input type="email" id="userEmail" placeholder="Email" />
+        <input type="text" id="userPhone" placeholder="Phone" />
+        <button onclick="addUser()">Add User</button>
+        <pre id="addResult"></pre>
+    </section>
+
+    <section>
+        <h2>Delete User by ID</h2>
+        <input type="text" id="deleteUserId" placeholder="Enter User ID" />
+        <button onclick="deleteUser()">Delete User</button>
+        <pre id="deleteResult"></pre>
+    </section>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

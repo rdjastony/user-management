@@ -18,71 +18,8 @@ pipeline {
         stage('Set Build Info') {
             steps {
                 script {
-                    COMMIT_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    VERSION_TAG = "v${BUILD_NUMBER}-${COMMIT_HASH}"
-                    // Store in env to optionally use outside
-                    env.VERSION_TAG = VERSION_TAG
+                    def COMMIT_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    def VERSION = "v${BUILD_NUMBER}-${COMMIT_HASH}"
+                    env.VERSION_TAG = VERSION
                 }
             }
-        }
-
-        stage('Build API Service') {
-            steps {
-                script {
-                    sh "docker build -t ${REGISTRY}/${API_IMAGE}:${VERSION_TAG} ./api/api-service"
-                }
-            }
-        }
-
-        stage('Build User Service') {
-            steps {
-                script {
-                    sh "docker build -t ${REGISTRY}/${USER_IMAGE}:${VERSION_TAG} ./user/user-service"
-                }
-            }
-        }
-
-        stage('Build Frontend Service') {
-            steps {
-                script {
-                    sh "docker build -t ${REGISTRY}/${FRONTEND_IMAGE}:${VERSION_TAG} ./frontend"
-                }
-            }
-        }
-
-        stage('Push Docker Images') {
-            steps {
-                script {
-                    sh "docker push ${REGISTRY}/${API_IMAGE}:${VERSION_TAG}"
-                    sh "docker push ${REGISTRY}/${USER_IMAGE}:${VERSION_TAG}"
-                    sh "docker push ${REGISTRY}/${FRONTEND_IMAGE}:${VERSION_TAG}"
-                }
-            }
-        }
-
-        stage('Deploy Services') {
-            steps {
-                script {
-                    sh "VERSION_TAG=${VERSION_TAG} docker-compose up -d"
-                }
-            }
-        }
-
-        stage('Clean Up') {
-            steps {
-                script {
-                    sh 'docker system prune -f'
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            echo 'Cleaning up Docker resources.'
-            script {
-                sh 'docker system prune -f'
-            }
-        }
-    }
-}

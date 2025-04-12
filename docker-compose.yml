@@ -1,3 +1,5 @@
+version: '3'
+
 services:
   mysql:
     image: mysql:8
@@ -12,7 +14,7 @@ services:
       - app-network
 
   user-service:
-    image: abhishek7840/user-service:latest
+    image: abhishek7840/user-service:${VERSION_TAG}  # Use the environment variable for version tag
     container_name: user-service
     depends_on:
       - mysql
@@ -22,6 +24,24 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/userdb
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: Password
+    networks:
+      - app-network
+
+  api-service:
+    image: abhishek7840/api-service:${VERSION_TAG}  # Use the environment variable for version tag
+    container_name: api-service
+    depends_on:
+      - mysql
+    ports:
+      - "8081:8081"
+    networks:
+      - app-network
+
+  frontend:
+    image: abhishek7840/frontend:${VERSION_TAG}  # Use the environment variable for version tag
+    container_name: frontend
+    ports:
+      - "80:80"
     networks:
       - app-network
 

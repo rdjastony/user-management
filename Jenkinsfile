@@ -23,3 +23,65 @@ pipeline {
                     env.VERSION_TAG = VERSION
                 }
             }
+        } // ✅ This closing brace was missing
+
+        stage('Build API Service') {
+            steps {
+                script {
+                    sh "docker build -t ${REGISTRY}/${API_IMAGE}:${env.VERSION_TAG} ./api-service/api"
+                }
+            }
+        }
+
+        stage('Build User Service') {
+            steps {
+                script {
+                    sh "docker build -t ${REGISTRY}/${USER_IMAGE}:${env.VERSION_TAG} ./user-service/user"
+                }
+            }
+        }
+
+        stage('Build Frontend Service') {
+            steps {
+                script {
+                    sh "docker build -t ${REGISTRY}/${FRONTEND_IMAGE}:${env.VERSION_TAG} ./frontend"
+                }
+            }
+        }
+
+        stage('Push Docker Images') {
+            steps {
+                script {
+                    sh "docker push ${REGISTRY}/${API_IMAGE}:${env.VERSION_TAG}"
+                    sh "docker push ${REGISTRY}/${USER_IMAGE}:${env.VERSION_TAG}"
+                    sh "docker push ${REGISTRY}/${FRONTEND_IMAGE}:${env.VERSION_TAG}"
+                }
+            }
+        }
+
+        stage('Deploy Services') {
+            steps {
+                script {
+                    sh "VERSION_TAG=${env.VERSION_TAG} docker-compose up -d"
+                }
+            }
+        }
+
+        stage('Clean Up') {
+            steps {
+                script {
+                    sh 'docker system prune -f'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning up Docker resources.'
+            script {
+                sh 'docker system prune -f'
+            }
+        }
+    }
+}

@@ -17,45 +17,37 @@ pipeline {
 
         stage('Build') {
             steps {
-                node {  // Wrap the build steps inside the node block
-                    // Build the project using Maven
-                    script {
-                        sh "'${MAVEN_HOME}/bin/mvn' clean install -DskipTests"
-                    }
+                // Build the project using Maven
+                script {
+                    sh "'${MAVEN_HOME}/bin/mvn' clean install -DskipTests"
                 }
             }
         }
 
         stage('Test') {
             steps {
-                node {  // Wrap the test steps inside the node block
-                    // Run the tests using Maven
-                    script {
-                        sh "'${MAVEN_HOME}/bin/mvn' test"
-                    }
+                // Run the tests using Maven
+                script {
+                    sh "'${MAVEN_HOME}/bin/mvn' test"
                 }
             }
         }
 
         stage('Package') {
             steps {
-                node {  // Wrap the packaging steps inside the node block
-                    // Create a JAR file using Maven
-                    script {
-                        sh "'${MAVEN_HOME}/bin/mvn' package -DskipTests"
-                    }
+                // Create a JAR file using Maven
+                script {
+                    sh "'${MAVEN_HOME}/bin/mvn' package -DskipTests"
                 }
             }
         }
 
         stage('Deploy') {
             steps {
-                node {  // Wrap the deploy steps inside the node block
-                    // Example deploy step, adjust to your deployment method
-                    script {
-                        sh "docker build -t user-management-api ."
-                        sh "docker run -d -p 8080:8080 user-management-api"
-                    }
+                // Example deploy step, adjust to your deployment method
+                script {
+                    sh "docker build -t user-management-api ."
+                    sh "docker run -d -p 8080:8080 user-management-api"
                 }
             }
         }
@@ -69,9 +61,7 @@ pipeline {
             echo 'Build or deployment failed.'
         }
         always {
-            node {  // Wrap the cleanup inside the node block
-                cleanWs()
-            }
+            cleanWs()  // No need for node block here, cleanWs works in this context
         }
     }
 }

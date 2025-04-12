@@ -60,8 +60,10 @@ pipeline {
             echo 'Build or deployment failed.'
         }
         always {
-            // Clean the workspace, ensure it's within a node context
-            cleanWs()
+            // Clean the workspace inside a node block
+            node {
+                cleanWs()  // This will clean the workspace after the build, inside the node context
+            }
         }
     }
 }

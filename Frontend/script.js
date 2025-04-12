@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8081/users";
+const API_BASE = "http://127.0.0.1:61298/users";
 
 function ping() {
   fetch(`${API_BASE}/ping`)

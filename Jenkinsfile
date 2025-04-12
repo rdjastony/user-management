@@ -61,7 +61,10 @@ pipeline {
             echo 'Build or deployment failed.'
         }
         always {
-            cleanWs()  // No need for node block here, cleanWs works in this context
+            // Wrap cleanWs in a node block as it requires workspace context
+            node {
+                cleanWs()  // Clean up the workspace
+            }
         }
     }
 }

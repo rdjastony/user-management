@@ -4,7 +4,7 @@ pipeline {
     environment {
         // Set environment variables, such as Java version or Maven options if needed
         JAVA_HOME = '/usr/lib/jvm/java-17-openjdk'
-        MAVEN_HOME = tool name: 'M3', type: 'Tool'
+        MAVEN_HOME = tool name: 'Maven 3', type: 'Tool'
     }
 
     stages {

@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-            maven 'Maven 3' // 👈 This name must match what you defined in Global Tool Configuration
-        }
+        maven 'Maven 3'  // must match Jenkins > Global Tool Configuration
+    }
 
     environment {
         API_IMAGE = 'api-service'
@@ -81,9 +81,7 @@ pipeline {
 
         stage('Clean Up') {
             steps {
-                script {
-                    sh 'docker system prune -f'
-                }
+                sh 'docker system prune -f'
             }
         }
     }
@@ -91,9 +89,7 @@ pipeline {
     post {
         always {
             echo 'Cleaning up Docker resources.'
-            script {
-                sh 'docker system prune -f'
-            }
+            sh 'docker system prune -f'
         }
     }
 }

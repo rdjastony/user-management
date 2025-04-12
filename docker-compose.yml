@@ -14,7 +14,7 @@ services:
       - app-network
 
   user-service:
-    image: abhishek7840/user-service:${VERSION_TAG}  # Use the environment variable for version tag
+    image: abhishek7840/user-service:${VERSION_TAG}
     container_name: user-service
     depends_on:
       - mysql
@@ -28,7 +28,7 @@ services:
       - app-network
 
   api-service:
-    image: abhishek7840/api-service:${VERSION_TAG}  # Use the environment variable for version tag
+    image: abhishek7840/api-service:${VERSION_TAG}
     container_name: api-service
     depends_on:
       - mysql
@@ -38,7 +38,7 @@ services:
       - app-network
 
   frontend:
-    image: abhishek7840/frontend:${VERSION_TAG}  # Use the environment variable for version tag
+    image: abhishek7840/frontend:${VERSION_TAG}
     container_name: frontend
     ports:
       - "80:80"

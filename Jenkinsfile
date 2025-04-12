@@ -53,17 +53,17 @@ pipeline {
     }
 
     post {
-        always {
-            // Wrap the cleanWs() step inside a node block to ensure workspace context
-            node {
-                cleanWs()  // This will clean the workspace after the build
-            }
-        }
         success {
             echo 'Build and deployment succeeded.'
         }
         failure {
             echo 'Build or deployment failed.'
+        }
+        always {
+            // Wrap the cleanWs in a node block to give it a workspace context
+            node('any') {
+                cleanWs()  // This will clean the workspace after the build
+            }
         }
     }
 }

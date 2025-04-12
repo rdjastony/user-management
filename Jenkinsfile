@@ -9,13 +9,11 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                // Checkout the code from your repository
-                // Ensure the agent has git installed and can access the repository
-                git 'https://github.com/rdjastony/user-management.git'
-            }
-        }
+       stage('Checkout') {
+           steps {
+               git branch: 'main', url: 'https://github.com/rdjastony/user-management.git'
+           }
+       }
 
         stage('Build') {
             steps {

@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+            maven 'Maven 3' // 👈 This name must match what you defined in Global Tool Configuration
+        }
+
     environment {
         API_IMAGE = 'api-service'
         USER_IMAGE = 'user-service'

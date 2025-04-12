@@ -12,7 +12,7 @@ pipeline {
         // Step 1: Clone Repository
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/rdjastony/user-management#' // Change to your repo URL
+                git 'https://github.com/rdjastony/user-management' // Change to your repo URL
             }
         }
 

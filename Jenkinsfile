@@ -23,7 +23,7 @@ pipeline {
                     env.VERSION_TAG = VERSION
                 }
             }
-        } // ✅ This closing brace was missing
+        }
 
         stage('Build API Jar') {
             steps {
@@ -32,15 +32,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Build API Service') {
-            steps {
-                script {
-                    sh "docker build -t ${REGISTRY}/${API_IMAGE}:${env.VERSION_TAG} ./api-service/api"
-                }
-            }
-        }
-
 
         stage('Build API Service') {
             steps {

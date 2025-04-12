@@ -35,23 +35,9 @@ pipeline {
                     sh 'mvn clean package -DskipTests'
                 }
             }
-        }
 
-        stage('Build API Service') {
-            steps {
-                script {
-                    sh "docker build -t ${REGISTRY}/${API_IMAGE}:${env.VERSION_TAG} ./api-service/api"
-                }
-            }
-        }
 
-        stage('Build User Service') {
-            steps {
-                script {
-                    sh "docker build -t ${REGISTRY}/${USER_IMAGE}:${env.VERSION_TAG} ./user-service/user"
-                }
-            }
-        }
+   
 
         stage('Build Frontend Service') {
             steps {

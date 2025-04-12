@@ -2,10 +2,8 @@ pipeline {
     agent any  // This means Jenkins will use any available node/agent.
 
     environment {
-        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk' // Ensure this path is correct for your agent(s)
-        // IMPORTANT: Make sure a Maven tool named 'Maven 3' is configured
-        // in Manage Jenkins -> Global Tool Configuration
-        MAVEN_HOME = tool name: 'Maven 3', type: 'maven' // Changed type to 'maven' for clarity, 'Tool' also works
+    JAVA_HOME = tool name: 'JDK 17'
+    MAVEN_HOME = tool name: 'Maven 3', type: 'maven'
     }
 
     stages {

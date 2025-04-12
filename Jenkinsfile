@@ -1,9 +1,8 @@
 pipeline {
-    agent any
+    agent any  // This allows Jenkins to pick an available node automatically
 
     environment {
         JAVA_HOME = '/usr/lib/jvm/java-17-openjdk'
-        // Ensure the Maven tool name is correct
         MAVEN_HOME = tool name: 'Maven 3', type: 'Tool'
     }
 

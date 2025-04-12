@@ -2,64 +2,52 @@ pipeline {
     agent any
 
     environment {
-        JAVA_HOME = tool name: 'JDK 17'
-        MAVEN_HOME = tool name: 'Maven 3', type: 'maven'
-        PATH = "${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${env.PATH}"
+        // Set environment variables, such as Java version or Maven options if needed
+        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk'
+        MAVEN_HOME = tool name: 'Maven 3', type: 'Tool'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/rdjastony/user-management.git'
+                // Checkout the code from your repository
+                git 'https://github.com/your-username/your-repository.git' branch: 'main'
             }
         }
 
         stage('Build') {
             steps {
+                // Build the project using Maven
                 script {
-                    sh "${MAVEN_HOME}/bin/mvn -V"
-                    sh "${MAVEN_HOME}/bin/mvn clean install -DskipTests"
+                    sh "'${MAVEN_HOME}/bin/mvn' clean install -DskipTests"
                 }
             }
         }
 
         stage('Test') {
             steps {
+                // Run the tests using Maven
                 script {
-                    sh "${MAVEN_HOME}/bin/mvn test"
-                }
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
+                    sh "'${MAVEN_HOME}/bin/mvn' test"
                 }
             }
         }
 
         stage('Package') {
             steps {
+                // Create a JAR file using Maven
                 script {
-                    sh "${MAVEN_HOME}/bin/mvn package -DskipTests"
-                    archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                    sh "'${MAVEN_HOME}/bin/mvn' package -DskipTests"
                 }
             }
         }
 
         stage('Deploy') {
             steps {
+                // Example deploy step, adjust to your deployment method
                 script {
-                    // Clean up any previous container
-                    sh '''
-                        docker stop user-management-app || true
-                        docker rm user-management-app || true
-                        docker rmi user-management-api || true
-                    '''
-
-                    // Build new Docker image
-                    sh 'docker build -t user-management-api .'
-
-                    // Run container
-                    sh 'docker run -d -p 8080:8080 --name user-management-app user-management-api'
+                    sh "docker build -t user-management-api ."
+                    sh "docker run -d -p 8080:8080 user-management-api"
                 }
             }
         }
@@ -67,13 +55,13 @@ pipeline {
 
     post {
         success {
-            echo '✅ Build and deployment succeeded.'
+            echo 'Build and deployment succeeded.'
         }
         failure {
-            echo '❌ Build or deployment failed.'
+            echo 'Build or deployment failed.'
         }
         always {
-            echo '🧹 Cleaning workspace...'
+            // Clean up actions if needed, like archiving build artifacts or reports
             cleanWs()
         }
     }

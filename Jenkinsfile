@@ -25,6 +25,23 @@ pipeline {
             }
         } // ✅ This closing brace was missing
 
+        stage('Build API Jar') {
+            steps {
+                dir('api-service/api') {
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+        }
+
+        stage('Build API Service') {
+            steps {
+                script {
+                    sh "docker build -t ${REGISTRY}/${API_IMAGE}:${env.VERSION_TAG} ./api-service/api"
+                }
+            }
+        }
+
+
         stage('Build API Service') {
             steps {
                 script {

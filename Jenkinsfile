@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3'
+        maven 'Maven_3.8'
         jdk 'JDK 17'
     }
 
@@ -20,7 +20,9 @@ pipeline {
 
         stage('Build with Maven') {
             steps {
-                sh 'mvn clean install'
+                dir('user-service/user') {  // Specify the relative path to the directory containing pom.xml
+                    sh 'mvn clean install'
+                }
             }
         }
     }

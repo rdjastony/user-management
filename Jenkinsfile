@@ -29,7 +29,7 @@ pipeline {
         stage('Build API Service') {
             steps {
                 script {
-                    sh "docker build -t ${REGISTRY}/${API_IMAGE}:${VERSION_TAG} ./api-service"
+                    sh "docker build -t ${REGISTRY}/${API_IMAGE}:${VERSION_TAG} ./api/api-service"
                 }
             }
         }
@@ -37,7 +37,7 @@ pipeline {
         stage('Build User Service') {
             steps {
                 script {
-                    sh "docker build -t ${REGISTRY}/${USER_IMAGE}:${VERSION_TAG} ./user-service"
+                    sh "docker build -t ${REGISTRY}/${USER_IMAGE}:${VERSION_TAG} ./user/user-service"
                 }
             }
         }

@@ -36,8 +36,8 @@ pipeline {
                 }
             }
 
+       }
 
-   
 
         stage('Build Frontend Service') {
             steps {

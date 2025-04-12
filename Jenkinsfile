@@ -1,5 +1,5 @@
 pipeline {
-    agent any  // This allows Jenkins to pick an available node automatically
+    agent any  // This means Jenkins will use any available node/agent.
 
     environment {
         JAVA_HOME = '/usr/lib/jvm/java-17-openjdk'
@@ -60,10 +60,8 @@ pipeline {
             echo 'Build or deployment failed.'
         }
         always {
-            // Wrap cleanWs in a node block as it requires workspace context
-            node {
-                cleanWs()  // Clean up the workspace
-            }
+            // Clean the workspace, ensure it's within a node context
+            cleanWs()
         }
     }
 }

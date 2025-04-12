@@ -1,81 +1,68 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Maven 3'  // must match Jenkins > Global Tool Configuration
-    }
-
     environment {
-        API_IMAGE = 'api-service'
-        USER_IMAGE = 'user-service'
-        FRONTEND_IMAGE = 'frontend'
-        REGISTRY = 'abhishek7840'
+        // Set environment variables, such as Java version or Maven options if needed
+        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk'
+        MAVEN_HOME = tool name: 'M3', type: 'Tool'
     }
 
     stages {
-        stage('Clone Repo') {
+        stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/rdjastony/user-management'
+                // Checkout the code from your repository
+                git 'https://github.com/your-username/your-repository.git'
             }
         }
 
-        stage('Set Build Info') {
+        stage('Build') {
             steps {
+                // Build the project using Maven
                 script {
-                    def COMMIT_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    def VERSION = "v${BUILD_NUMBER}-${COMMIT_HASH}"
-                    env.VERSION_TAG = VERSION
+                    sh "'${MAVEN_HOME}/bin/mvn' clean install -DskipTests"
                 }
             }
         }
 
-        stage('Build API Jar') {
+        stage('Test') {
             steps {
-                dir('api-service/api') {
-                    sh 'mvn clean package -DskipTests'
-                }
-            }
-
-       }
-
-
-        stage('Build Frontend Service') {
-            steps {
+                // Run the tests using Maven
                 script {
-                    sh "docker build -t ${REGISTRY}/${FRONTEND_IMAGE}:${env.VERSION_TAG} ./frontend"
+                    sh "'${MAVEN_HOME}/bin/mvn' test"
                 }
             }
         }
 
-        stage('Push Docker Images') {
+        stage('Package') {
             steps {
+                // Create a JAR file using Maven
                 script {
-                    sh "docker push ${REGISTRY}/${API_IMAGE}:${env.VERSION_TAG}"
-                    sh "docker push ${REGISTRY}/${USER_IMAGE}:${env.VERSION_TAG}"
-                    sh "docker push ${REGISTRY}/${FRONTEND_IMAGE}:${env.VERSION_TAG}"
+                    sh "'${MAVEN_HOME}/bin/mvn' package -DskipTests"
                 }
             }
         }
 
-        stage('Deploy Services') {
+        stage('Deploy') {
             steps {
+                // Example deploy step, adjust to your deployment method
                 script {
-                    sh "VERSION_TAG=${env.VERSION_TAG} docker-compose up -d"
+                    sh "docker build -t user-management-api ."
+                    sh "docker run -d -p 8080:8080 user-management-api"
                 }
-            }
-        }
-
-        stage('Clean Up') {
-            steps {
-                sh 'docker system prune -f'
             }
         }
     }
 
     post {
+        success {
+            echo 'Build and deployment succeeded.'
+        }
+        failure {
+            echo 'Build or deployment failed.'
+        }
         always {
-            echo 'Cleaning up Docker resources.'
-            sh 'docker system prune -f'
+            // Clean up actions if needed, like archiving build artifacts or reports
+            cleanWs()
         }
     }
 }

@@ -19,46 +19,88 @@ pipeline {
             }
         }
 
-        // Build the project with Maven
-        stage('Build with Maven') {
+        // Build the user-service project with Maven
+        stage('Build user-service with Maven') {
             steps {
-                dir('user-service/user') {  // Specify the relative path to the directory containing pom.xml
+                dir('user-service/user') {  // Specify the relative path to the user-service directory
                     sh 'mvn clean install'
                 }
             }
         }
 
-        // Test the application (run unit tests or integration tests)
-        stage('Test') {
+        // Build the api-service project with Maven
+        stage('Build api-service with Maven') {
+            steps {
+                dir('api-service/api') {  // Specify the relative path to the api-service directory
+                    sh 'mvn clean install'
+                }
+            }
+        }
+
+        // Test the user-service application
+        stage('Test user-service') {
             steps {
                 dir('user-service/user') {
-                    // Run the tests with Maven
                     sh 'mvn test'
                 }
             }
             post {
                 success {
-                    echo 'Tests passed successfully.'
+                    echo 'user-service tests passed successfully.'
                 }
                 failure {
-                    echo 'Tests failed. Check logs for details.'
+                    echo 'user-service tests failed. Check logs for details.'
                 }
             }
         }
 
-        // Deploy the application (for this example, we'll just simulate it with an echo command)
-        stage('Deploy') {
+        // Test the api-service application
+        stage('Test api-service') {
             steps {
-                echo 'Deploying the application...'
-                // Example of deployment step (replace with actual deployment commands)
-                // sh 'docker-compose up -d' or any deployment command relevant to your project
+                dir('api-service/api') {
+                    sh 'mvn test'
+                }
             }
             post {
                 success {
-                    echo 'Deployment succeeded.'
+                    echo 'api-service tests passed successfully.'
                 }
                 failure {
-                    echo 'Deployment failed. Check logs for details.'
+                    echo 'api-service tests failed. Check logs for details.'
+                }
+            }
+        }
+
+        // Deploy user-service
+        stage('Deploy user-service') {
+            steps {
+                echo 'Deploying user-service application...'
+                // Replace with actual user-service deployment commands (e.g., Docker, Kubernetes, etc.)
+                // sh 'docker-compose up -d' or any deployment command relevant to your user-service.
+            }
+            post {
+                success {
+                    echo 'user-service deployment succeeded.'
+                }
+                failure {
+                    echo 'user-service deployment failed. Check logs for details.'
+                }
+            }
+        }
+
+        // Deploy api-service
+        stage('Deploy api-service') {
+            steps {
+                echo 'Deploying api-service application...'
+                // Replace with actual api-service deployment commands (e.g., Docker, Kubernetes, etc.)
+                // sh 'docker-compose up -d' or any deployment command relevant to your api-service.
+            }
+            post {
+                success {
+                    echo 'api-service deployment succeeded.'
+                }
+                failure {
+                    echo 'api-service deployment failed. Check logs for details.'
                 }
             }
         }

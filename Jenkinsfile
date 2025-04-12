@@ -61,4 +61,7 @@ pipeline {
         }
         always {
             // Clean workspace after build
-            cleanWs()
+            cleanWs()  // Automatically uses the workspace of the current node
+        }
+    }
+}

@@ -5,6 +5,10 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
+import com.example.grpc.UserRequest;
+import com.example.grpc.UserResponse;
+import com.example.grpc.UserServiceGrpc;
+
 
 import java.util.List;
 

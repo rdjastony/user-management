@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   mysql:
     image: mysql:8
@@ -12,12 +10,18 @@ services:
       - "3306:3306"
     networks:
       - app-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-pPassword" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   user-service:
-    image: abhishek7840/user-service:${VERSION_TAG}
+    image: abhishek7840/user-service:latest
     container_name: user-service
     depends_on:
       - mysql
+      - condition: service_healthy
     ports:
       - "8080:8080"
     environment:
@@ -27,8 +31,11 @@ services:
     networks:
       - app-network
 
+
+
+
   api-service:
-    image: abhishek7840/api-service:${VERSION_TAG}
+    image: abhishek7840/api-service:latest
     container_name: api-service
     depends_on:
       - mysql
@@ -38,10 +45,10 @@ services:
       - app-network
 
   frontend:
-    image: abhishek7840/frontend:${VERSION_TAG}
+    image: abhishek7840/frontend:latest
     container_name: frontend
     ports:
-      - "80:80"
+      - "5500:80"
     networks:
       - app-network
 

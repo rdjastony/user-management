@@ -7,7 +7,7 @@ services:
       MYSQL_ROOT_PASSWORD: Password
       MYSQL_DATABASE: userdb
     ports:
-      - "3306:3306"
+      - "3307:3306"  # Exposing MySQL on port 3307 on the host
     networks:
       - app-network
     healthcheck:
@@ -25,14 +25,11 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/userdb
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/userdb  # Keep using the internal Docker network address
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: Password
     networks:
       - app-network
-
-
-
 
   api-service:
     image: abhishek7840/api-service:latest

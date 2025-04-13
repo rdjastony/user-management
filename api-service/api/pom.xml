@@ -141,7 +141,7 @@
 				<artifactId>protobuf-maven-plugin</artifactId>
 				<version>0.6.1</version>
 				<configuration>
-					<protoSourceRoot>${project.basedir}/proto</protoSourceRoot>
+					<protoSourceRoot>${project.basedir}/../proto</protoSourceRoot>
 				</configuration>
 				<executions>
 					<execution>

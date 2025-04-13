@@ -5,6 +5,9 @@ import com.example.api.service.GrpcUserClient;
 import com.example.grpc.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import com.example.grpc.UserServiceGrpc;
+import com.example.grpc.UserRequest;
+import com.example.grpc.UserResponse;
 
 import java.util.List;
 import java.util.Map;

@@ -162,6 +162,9 @@
 							<goal>compile</goal>
 							<goal>compile-custom</goal>
 						</goals>
+						<configuration>
+							<pluginParameter>jakarta_omit,@generated=omit</pluginParameter>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
